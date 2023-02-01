@@ -19,7 +19,8 @@ const routes = [
     path: '/teachers',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/teachers/Index.vue') }
+      { path: '', component: () => import('pages/teachers/Index.vue') },
+      { path: 'new', component: () => import('pages/teachers/New.vue') }
     ]
   },
   {
