@@ -1,6 +1,11 @@
 <template>
   <q-page class="q-pa-lg q-col-gutter-y-lg">
+    <div>
+      <q-toolbar-title class="flex flex-center" ><strong>دانش آموز </strong>جدید</q-toolbar-title>
+      <hr>
+    </div>
     <div class="row justify-between q-col-gutter-sm">
+
       <q-input class="col-sm-4 col-xs-12" outlined label="نام" />
       <q-input class="col-sm-4 col-xs-12" outlined label="نام خانوادگی" />
       <q-input class="col-sm-4 col-xs-12" outlined label="کد ملی" />
@@ -12,7 +17,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {}
+  },
+};
 </script>
 
 <style></style>
