@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <q-btn label="دانش‌آموز جدید" to="/students/new"/>
+    <q-btn label="دانش‌آموز جدید" :style='{backgroundColor: "#8abc00"}' :to="{name : 'StudentsNew'}"/>
   </q-page>
 </template>
 
