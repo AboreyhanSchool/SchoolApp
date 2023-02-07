@@ -46,10 +46,13 @@
             dense
             flat
             color="grey-8"
-            icon="video_call"
+            :icon="icon"
             v-if="$q.screen.gt.sm"
           >
-            <q-tooltip>Create a video or post</q-tooltip>
+            <q-tooltip transition-show="rotate"
+            transition-hide="rotate" v-if="weatherdata != null">
+              <p><b>شهر:</b> {{weatherdata.name}}</p>
+              <p><b>هوا:</b> {{weatherdata.weather[0].description}}</p></q-tooltip>
           </q-btn>
           <q-btn
             round
@@ -76,10 +79,10 @@
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
           <q-btn round flat>
-            <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+            <q-avatar  size="26px">
+              <img  src="https://cdn.quasar.dev/img/boy-avatar.png" />
             </q-avatar>
-            <q-tooltip>Account</q-tooltip>
+            <q-tooltip>Login or Register Account</q-tooltip>
           </q-btn>
         </div>
       </q-toolbar>
@@ -185,11 +188,50 @@
 <script>
 import { ref } from "vue";
 import { fabYoutube } from "@quasar/extras/fontawesome-v6";
+import {wiDaySunny} from 'quasar-extras-svg-icons/weather-icons'
 
 export default {
   name: "MyLayout",
+  data() {
+    return {
+      weatherdata: null,
+      api_ip:'https://api.ipgeolocation.io/ipgeo?apiKey=70760d689d964bbbb9d2476cb2e00f13&ip=89.37.146.159&fields=city&output=json',
+      api_wheather:'https://api.openweathermap.org/data/2.5/',
+      api_key_weather:"5354bc580fb88b747dd6ecf2e6a44e9e",
+      city:"",
+      your_ip:'',
+      icon:wiDaySunny,
+      info:'',
+    }
+  },
+  methods: {
+    async fetchWeather(){
+        await fetch(`${this.api_ip}`)
+        .then(res =>{
+          console.log(res)
+          return res.json()
+        })
+        .then(response =>{
+          this.city = response.city;
+          console.log(response)
+        }).catch(res => console.log(res.message+'asdas'))
 
+        await fetch(`${this.api_wheather}weather?q=${this.city}&appid=${this.api_key_weather}`)
+        .then(res =>{
+          return res.json()
+        }).then(response  => {
+         this.weatherdata = response;
+         console.log(response)
+        }).catch(res => this.info = res.name)
+
+      }
+
+  },
+  mounted(){
+    this.fetchWeather()
+  },
   setup() {
+
     const leftDrawerOpen = ref(false);
     const search = ref("");
 
@@ -206,9 +248,9 @@ export default {
       toggleLeftDrawer,
 
       links1: [
-        { icon: "home", text: "دانش‌آموزان", to: "students" },
-        { icon: "whatshot", text: "معلمان", to: "teachers" },
-        { icon: "subscriptions", text: "درس‌ها", to: "lessons" },
+        { icon: "home", text: "دانش‌آموزان", to: 'students'},
+        { icon: "whatshot", text: "معلمان", to: "teachers"},
+        { icon: "subscriptions", text: "درس‌ها", to: 'lessons' },
       ],
       links2: [
         { icon: "folder", text: "Library" },
@@ -270,5 +312,6 @@ export default {
     font-size: .75rem
 
     &:hover
+
       color: #000
 </style>

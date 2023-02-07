@@ -1,30 +1,21 @@
 <template>
-  <q-page class="q-pa-lg q-col-gutter-y-lg">
-    <div>
-      <b>معلم جدید</b>
-      <hr>
-    </div>
-    <div class="login-page ">
-      <div class="form ">
-        <form class="register-form q-pa-lg q-col-gutter-y-sm">
-          <q-input type="text" outlined label="نام کاربری"/>
-          <q-input type="text" outlined label="نام خوانوادگی"/>
-          <q-input outlined label="کد ملی"/>
-          <q-input type="password" outlined label="رمز عبور"/>
-          <div><button  >حساب معلم ساخته شود</button></div>
-        </form>
-      </div>
-    </div>
-
-  </q-page>
+  <div>
+  <div class="form ">
+    <form class="register-form q-pa-lg q-col-gutter-y-sm">
+      <q-input type="text" outlined label="نام کاربری"/>
+      <q-input type="text" outlined label="نام خوانوادگی"/>
+      <q-input outlined label="کد ملی"/>
+      <q-input type="password" outlined label="رمز عبور"/>
+      <div><button  >حساب من ساخته شود</button></div>
+      <p class="message">قبلا ثبت نام کردید؟ <a :to="{name:'Login'}">وارد میشوم</a></p>
+    </form>
+  </div>
+</div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-    }
-  },
+  name:'Register'
 }
 </script>
 
@@ -85,39 +76,6 @@ export default {
 }
 .form .register-form {
   display: block;
-}
-.container {
-  position: relative;
-  z-index: 1;
-  max-width: 300px;
-  margin: 0 auto;
-}
-.container:before, .container:after {
-  content: "";
-  display: block;
-  clear: both;
-}
-.container .info {
-  margin: 50px auto;
-  text-align: center;
-}
-.container .info h1 {
-  margin: 0 0 15px;
-  padding: 0;
-  font-size: 36px;
-  font-weight: 300;
-  color: #1a1a1a;
-}
-.container .info span {
-  color: #4d4d4d;
-  font-size: 12px;
-}
-.container .info span a {
-  color: #000000;
-  text-decoration: none;
-}
-.container .info span .fa {
-  color: #EF3B3A;
 }
 body {
   background: #76b852; /* fallback for old browsers */

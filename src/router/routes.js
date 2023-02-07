@@ -8,7 +8,21 @@ const routes = [
     ]
   },
   {
-    path: '/students',name:'Students',
+    path: '/login', name:'Login',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/login.vue') }
+    ]
+  },
+  {
+    path: '/register',name:'Register',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/register.vue') }
+    ]
+  },
+  {
+    path: '/students',name:'students',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '',name: 'StudentsIndex', component: () => import('pages/students/Index.vue') },
@@ -16,7 +30,7 @@ const routes = [
     ]
   },
   {
-    path: '/teachers',name:'Teachers',
+    path: '/teachers',name:'teachers',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '',name:'TeachersIndex', component: () => import('pages/teachers/Index.vue') },
@@ -24,7 +38,7 @@ const routes = [
     ]
   },
   {
-    path: '/lessons',name:'Lessons',
+    path: '/lessons',name:'lessons',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '',name:'LessonsIndex', component: () => import('pages/lessons/Index.vue') }
