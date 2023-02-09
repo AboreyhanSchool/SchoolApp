@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf" class="bg-grey-1">
-    <q-header elevated class="bg-white text-grey-8 q-py-xs" height-hint="58">
+    <q-header elevated style="background-color: #e4e4e4;" class=" text-grey-8 q-py-xs" height-hint="58">
       <q-toolbar>
         <q-btn
           flat
@@ -26,7 +26,7 @@
             outlined
             square
             v-model="search"
-            placeholder="Search"
+            placeholder="جست و جو"
             class="bg-white col"
           />
           <q-btn
@@ -41,32 +41,9 @@
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <div v-if="weatherdata != null">
-          <q-btn
-            round
-            dense
-            flat
-            color="red"
-            v-if="$q.screen.gt.sm"
-
-          >
-            <q-avatar >
-              <img  :src="iconweather" />
-            </q-avatar>
-            <q-badge :color="color" style="width: 30px; height: 10px;" text-color="white" floating> {{ c }} C </q-badge>
-            <q-tooltip  transition-show="rotate"
-            transition-hide="rotate" >
-           <center><img style="width: 25px; height: 15px;" :src="flag_country" /></center>
-            <p><i>شهر:</i> {{weatherdata.name}}</p>
-            <p><i>هوا: </i>{{weatherdata.weather[0].description}}</p>
-            <p><i>دما:</i> {{ c }} C</p>
-
-            </q-tooltip>
-          </q-btn>
-        </div>
-          <div v-else>
-           <q-linear-progress  style="width: 20px;" dark rounded indeterminate color="secondary" class="q-mt-sm" />
-          </div>
+          <!-- Weather components  -->
+          <Weather />
+          <!-- Weather components /-->
           <q-btn
             round
             dense
@@ -91,12 +68,9 @@
             <q-badge color="red" text-color="white" floating> 2 </q-badge>
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
-          <q-btn round flat>
-            <q-avatar  size="26px">
-              <img  src="https://cdn.quasar.dev/img/boy-avatar.png" />
-            </q-avatar>
-            <q-tooltip>Login or Register Account</q-tooltip>
-          </q-btn>
+          <!-- Account Componnents  -->
+          <Account />
+          <!-- Account Componnents /-->
         </div>
       </q-toolbar>
     </q-header>
@@ -201,57 +175,17 @@
 <script>
 import { ref } from "vue";
 import { fabYoutube, fasIcons } from "@quasar/extras/fontawesome-v6";
-import {wiDaySunny} from 'quasar-extras-svg-icons/weather-icons'
+import Weather from 'components/Weather.vue'
+import Account from 'components/Account.vue'
 
 export default {
   name: "MyLayout",
   data() {
-    return {
-      weatherdata: null,
-      api_ip:'https://api.ipgeolocation.io/ipgeo?apiKey=70760d689d964bbbb9d2476cb2e00f13&fields=city,country_flag&output=json',
-      api_wheather:'https://api.openweathermap.org/data/2.5/',
-      api_key_weather:"5354bc580fb88b747dd6ecf2e6a44e9e",
-      city:"",
-      your_ip:'',
-      iconweatrher:null,
-      flag_country:'',
-      info:'',
-      color:'',
-      c: null,
-
-    }
+    return {}
   },
-  methods: {
-    async fetchWeather(){
-
-        await fetch(`${this.api_ip}`)
-        .then(res =>{
-          console.log(res)
-          return res.json()
-        })
-        .then(response =>{
-          this.city = response.city;
-          this.flag_country = response.country_flag
-          console.log(response)
-        }).catch(res => console.log(res.message+'flag'))
-
-        await fetch(`${this.api_wheather}weather?q=${this.city}&lang=fa&appid=${this.api_key_weather}`)
-        .then(res =>{
-          return res.json()
-        }).then(response  => {
-
-         this.weatherdata = response;
-         this.c = Math.floor(response.main.temp - 273.15)
-         this.iconweather = `http://openweathermap.org/img/wn/${response.weather[0].icon}.png`
-         console.log(response)
-         this.color= ((this.c > 8) ? 'red' : 'blue')
-        }).catch(res => this.info = res.name)
-
-      }
-
-  },
-  beforeMount(){
-    this.fetchWeather()
+  components:{
+    Weather,
+    Account
   },
   setup() {
 
