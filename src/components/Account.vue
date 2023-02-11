@@ -5,7 +5,7 @@
         <div class="row no-wrap q-pa-md">
           <div class="column">
             <div class="text-h6 q-mb-md">تنضیمات</div>
-            <q-toggle v-model="mobileData" label="Use Mobile Data" />
+            <q-toggle v-model="weather" label="آب و هوا" />
             <q-toggle v-model="bluetooth" label="Bluetooth" />
           </div>
 
@@ -37,11 +37,20 @@ import { ref } from 'vue'
 
 export default {
   name:'Account',
+  props:{
+    OnOff : Function
+  },
   setup () {
     return {
-      mobileData: ref(true),
+      weather: ref(true),
       bluetooth: ref(false)
     }
+  },
+  watch:{
+  weather() {
+        this.$emit("OnOffWrather", this.weather)
+        console.log("helloo")
+      }
   }
 }
 </script>

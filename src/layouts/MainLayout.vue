@@ -42,7 +42,7 @@
 
         <div class="q-gutter-sm row items-center no-wrap">
           <!-- Weather components  -->
-          <Weather />
+          <Weather v-if="weather" />
           <!-- Weather components /-->
           <q-btn
             round
@@ -69,7 +69,7 @@
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
           <!-- Account Componnents  -->
-          <Account />
+          <Account @OnOffWrather="OnOffWrather($event)" />
           <!-- Account Componnents /-->
         </div>
       </q-toolbar>
@@ -181,11 +181,18 @@ import Account from 'components/Account.vue'
 export default {
   name: "MyLayout",
   data() {
-    return {}
+    return {
+      weather:true,
+    }
   },
   components:{
     Weather,
     Account
+  },
+  methods:{
+    OnOffWrather(bool){
+      this.weather = bool
+    }
   },
   setup() {
 

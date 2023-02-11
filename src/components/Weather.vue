@@ -67,7 +67,7 @@ export default {
 
          this.weatherdata = response;
          this.c = Math.floor(response.main.temp - 273.15)
-         this.iconweather = `http://openweathermap.org/img/wn/${response.weather[0].icon}.png`
+         this.iconweather = `https://openweathermap.org/img/wn/${response.weather[0].icon}.png`
          console.log(response)
          this.color= ((this.c > 8) ? 'red' : 'blue')
         }).catch(res => this.info = res.name)
