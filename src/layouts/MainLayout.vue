@@ -212,9 +212,9 @@ export default {
       toggleLeftDrawer,
 
       links1: [
-        { icon: "home", text: "دانش‌آموزان", to: 'students'},
-        { icon: "whatshot", text: "معلمان", to: "teachers"},
-        { icon: "subscriptions", text: "درس‌ها", to: 'lessons' },
+        { icon: "home", text: "دانش‌آموزان", to: '/students'},
+        { icon: "whatshot", text: "معلمان", to: "/teachers"},
+        { icon: "subscriptions", text: "درس‌ها", to: '/lessons' },
       ],
       links2: [
         { icon: "folder", text: "Library" },

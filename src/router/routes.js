@@ -29,6 +29,14 @@ const routes = [
       { path: 'new',name: 'StudentsNew' , component: () => import('pages/students/New.vue') }
     ]
   },
+  ,
+  {
+    path: '/student/:nationalCode',name:'student',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '',name: 'StudentIndex', component: () => import('pages/students/StudentIndex.vue') }
+    ]
+  },
   {
     path: '/teachers',name:'teachers',
     component: () => import('layouts/MainLayout.vue'),
