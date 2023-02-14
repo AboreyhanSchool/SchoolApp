@@ -182,7 +182,7 @@ export default {
   name: "MyLayout",
   data() {
     return {
-      weather:true,
+      weather:null,
     }
   },
   components:{
