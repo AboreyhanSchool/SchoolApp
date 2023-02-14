@@ -8,10 +8,10 @@ export const useWeatherStore = defineStore("weather", {
     isShow: (state) => state.shown,
   },
   actions: {
-    show() {
+    show:() => {
       this.shown = true;
     },
-    hide() {
+    hide:() => {
       this.shown = false;
     },
   },

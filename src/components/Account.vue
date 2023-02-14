@@ -53,9 +53,9 @@ export default {
   watch: {
     weather() {
       if (this.weather) {
-        this.weatherStore.show();
+        this.weatherStore.show;
       } else {
-        this.weatherStore.hide();
+        this.weatherStore.hide;
       }
       this.$emit("OnOffWrather", this.weather);
       console.log("helloo");
