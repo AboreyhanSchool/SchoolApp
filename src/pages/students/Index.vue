@@ -1,17 +1,25 @@
 <template>
   <q-page>
     <q-btn
+      class="backcolor"
       label="دانش‌آموز جدید"
-      :style="{ backgroundColor: '#8abc00' }"
+
       :to="{ name: 'StudentsNew' }"
     />
-    <div class="row" v-for="(student, index) in students" :key="index">
-      {{ student }}
-    </div>
+    <!--  ListOfStudents  -->
+
+    <ListOfStudents />
+
+    <!--  ListOfStudents  /-->
+
   </q-page>
+
 </template>
 
 <script>
+import { ref } from 'vue'
+import  ListOfStudents  from 'components/ListOfStudents.vue';
+
 export default {
   name: "students",
   setup() {
@@ -19,15 +27,11 @@ export default {
       students: ref([]),
     };
   },
-  beforeMount() {
-    this.getStudents();
-  },
-  methods: {
-    async getStudents(nationalCode) {
-      this.students = (await api.get(`/students`)).data;
-    },
-  },
+  components:{
+    ListOfStudents
+  }
 };
 </script>
 
-<style></style>
+<style>
+</style>

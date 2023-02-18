@@ -25,7 +25,8 @@
         label="کد ملی"
         v-model="student.nationalCode"
       />
-    </div>
+    <date-picker  placeholder='تاریخ تولد شما ؟' min="1340/00/00" max="1402/00/00" v-model="student.birthDate"></date-picker>
+  </div>
     <div class="row justify-end">
       <q-btn
         class="col-sm-3 col-xs-12"
@@ -33,6 +34,10 @@
         label="ارسال"
         @click="sendStudent"
       />
+
+      <user-added  v-if="UserAdded" />
+      <user-not-added  v-if="UserNotAdded"/>
+      <user-filed-added v-if="UserFiledAdded" />
     </div>
   </q-page>
 </template>
@@ -40,6 +45,10 @@
 <script>
 import { api } from "src/boot/axios";
 import { ref } from '@vue/reactivity';
+import UserAdded from 'components/UserAdded.vue'
+import UserNotAdded from 'components/UserNotAdded.vue'
+import UserFiledAdded from 'components/UserFiledAdded.vue'
+import DatePicker from 'vue3-persian-datetime-picker'
 export default {
   setup() {
     return {
@@ -48,15 +57,51 @@ export default {
         firstname:'',
         lastname:'',
         birthDate:'',
+
       }),
+
+      UserAdded:ref(false),
+      UserNotAdded:ref(false),
+      UserFiledAdded:ref(false)
     };
+  },
+  components:{
+    DatePicker,
+    UserAdded,
+    UserNotAdded,
+    UserFiledAdded
   },
   methods: {
     async sendStudent() {
-      let res = (await api.post("/student", this.student)).data;
+      if(this.student.birthDate != '' || this.student.firstname != '' || this.student.lastname != '' || this.student.nationalCode != ''){
+        let res = (await api.post("/student", this.student)).data;
+        if(res === true){
+          this.UserAdded = true
+        }else{
+          this.UserFiledAdded = true
+        }
+
+      }else{
+          this.UserNotAdded = true
+      }
+      function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+      }
+      sleep(3000).then(() => {
+          this.UserNotAdded = false
+          this.UserAdded = false
+          this.UserFiledAdded = false
+      });
+
+
     },
-  },
+  }
 };
 </script>
 
-<style></style>
+<style scoped>
+.brithday{
+  text-align-last: right;
+}
+
+</style>
