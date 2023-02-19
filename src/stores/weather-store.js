@@ -1,3 +1,4 @@
+import { useLocalStorage, useStorage } from "@vueuse/core";
 import { defineStore } from "pinia";
 
 export const useWeatherStore = defineStore("weather", {
@@ -5,14 +6,20 @@ export const useWeatherStore = defineStore("weather", {
     shown: false,
   }),
   getters: {
-    isShow: (state) => state.shown,
+    isShow: (state) => {
+      return useLocalStorage("weather", state.shown).value;
+    },
   },
   actions: {
-    show:() => {
+    show() {
       this.shown = true;
+      var storage = useLocalStorage("weather", false);
+      storage.value = this.shown;
     },
-    hide:() => {
+    hide() {
       this.shown = false;
+      var storage = useLocalStorage("weather", false);
+      storage.value = this.shown;
     },
   },
 });

@@ -1,6 +1,11 @@
 <template>
   <q-layout view="hHh lpR fFf" class="bg-grey-1">
-    <q-header elevated style="background-color: #e4e4e4;" class=" text-grey-8 q-py-xs" height-hint="58">
+    <q-header
+      elevated
+      style="background-color: #e4e4e4"
+      class="text-grey-8 q-py-xs"
+      height-hint="58"
+    >
       <q-toolbar>
         <q-btn
           flat
@@ -42,7 +47,7 @@
 
         <div class="q-gutter-sm row items-center no-wrap">
           <!-- Weather components  -->
-          <Weather v-if="weather" />
+          <Weather v-if="isShow" />
           <!-- Weather components /-->
           <q-btn
             round
@@ -69,7 +74,7 @@
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
           <!-- Account Componnents  -->
-          <Account @OnOffWrather="OnOffWrather($event)" />
+          <Account />
           <!-- Account Componnents /-->
         </div>
       </q-toolbar>
@@ -175,27 +180,25 @@
 <script>
 import { ref } from "vue";
 import { fabYoutube, fasIcons } from "@quasar/extras/fontawesome-v6";
-import Weather from 'components/Weather.vue'
-import Account from 'components/Account.vue'
+import Weather from "components/Weather.vue";
+import Account from "components/Account.vue";
+import { useWeatherStore } from "src/stores/weather-store";
+import { storeToRefs } from "pinia";
 
 export default {
   name: "MyLayout",
   data() {
+    let {isShow} = storeToRefs( useWeatherStore());
     return {
-      weather:null,
-    }
+      isShow,
+    };
   },
-  components:{
+  components: {
     Weather,
-    Account
+    Account,
   },
-  methods:{
-    OnOffWrather(bool){
-      this.weather = bool
-    }
-  },
-  setup() {
 
+  setup() {
     const leftDrawerOpen = ref(false);
     const search = ref("");
 
@@ -212,9 +215,9 @@ export default {
       toggleLeftDrawer,
 
       links1: [
-        { icon: "home", text: "دانش‌آموزان", to: '/students'},
-        { icon: "whatshot", text: "معلمان", to: "/teachers"},
-        { icon: "subscriptions", text: "درس‌ها", to: '/lessons' },
+        { icon: "home", text: "دانش‌آموزان", to: "/students" },
+        { icon: "whatshot", text: "معلمان", to: "/teachers" },
+        { icon: "subscriptions", text: "درس‌ها", to: "/lessons" },
       ],
       links2: [
         { icon: "folder", text: "Library" },

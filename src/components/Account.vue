@@ -5,7 +5,11 @@
         <div class="row no-wrap q-pa-md">
           <div class="column">
             <div class="text-h6 q-mb-md">تنضیمات</div>
-            <q-toggle v-model="weather" label="آب و هوا" />
+            <q-toggle
+              v-model="shown"
+              @update:model-value="updateWeather"
+              label="آب و هوا"
+            />
             <q-toggle v-model="bluetooth" label="Bluetooth" />
           </div>
 
@@ -32,33 +36,26 @@
 <script>
 import { useWeatherStore } from "src/stores/weather-store";
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 
 export default {
   name: "Account",
-  props: {
-    OnOff: Function,
-  },
   setup() {
-    const weatherStore = useWeatherStore;
+    const weatherStore = useWeatherStore();
+    let {isShow} = storeToRefs( weatherStore);
     return {
       weatherStore,
-      weather: ref(true),
+      shown: isShow,
       bluetooth: ref(false),
     };
   },
-  mounted() {
-    console.log('shown',this.weatherStore.isShow);
-    this.weather = this.weatherStore.isShow;
-  },
-  watch: {
-    weather() {
-      if (this.weather) {
-        this.weatherStore.show;
+  methods: {
+    updateWeather(value) {
+      if (value) {
+        this.weatherStore.show();
       } else {
-        this.weatherStore.hide;
+        this.weatherStore.hide();
       }
-      this.$emit("OnOffWrather", this.weather);
-      console.log("helloo");
     },
   },
 };
