@@ -19,7 +19,7 @@
         <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
           <q-icon :name="fabYoutube" color="red" size="28px" />
           <q-toolbar-title shrink class="text-weight-bold">
-            YouTube
+            ابوریحان
           </q-toolbar-title>
         </q-btn>
 

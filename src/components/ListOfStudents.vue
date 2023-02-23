@@ -13,6 +13,11 @@
       />
     </div>
     <q-btn v-if="btndel" @click="DelStudents" color="red" label="حذف" />
+
+    <user-deleted v-if="UserDeleted" />
+    <selected-a-user v-if="SelectedAUser" />
+
+
   </div>
 
   <div v-else></div>
@@ -21,6 +26,8 @@
 <script>
 import { ref } from "vue";
 import { api } from "src/boot/axios";
+import UserDeleted from 'components/UserDeleted.vue'
+import SelectedAUser from 'components/SelectedAUser.vue'
 
 const columns = [
   {
@@ -55,6 +62,10 @@ export default {
       columns,
       rows: ref([]),
       btndel: ref(false),
+
+      // reacts //
+      UserDeleted:ref(false),
+      SelectedAUser:ref(false),
     };
   },
 
@@ -99,9 +110,24 @@ export default {
       ).data;
 
       if (delResult == "User deleted") {
-        console.log("del");
+        this.UserDeleted = true
       }
+      if(delResult == "select a user"){
+        this.SelectedAUser = true
+      }
+      function sleep (time) {
+          return new Promise((resolve) => setTimeout(resolve, time));
+        }
+      sleep(3000).then(() => {
+          this.UserDeleted = false
+          this.SelectedAUser = false
+
+      });
     },
   },
+  components:{
+    UserDeleted,
+    SelectedAUser
+  }
 };
 </script>
