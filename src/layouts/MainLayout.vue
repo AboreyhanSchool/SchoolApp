@@ -17,7 +17,7 @@
         />
 
         <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
-          <q-icon :name="fabYoutube" color="red" size="28px" />
+          <q-icon :name="ionSchool" color="red" size="28px" />
           <q-toolbar-title shrink class="text-weight-bold">
             ابوریحان
           </q-toolbar-title>
@@ -179,7 +179,7 @@
 
 <script>
 import { ref } from "vue";
-import { fabYoutube, fasIcons } from "@quasar/extras/fontawesome-v6";
+import { ionSchool } from "@quasar/extras/ionicons-v6";
 import Weather from "components/Weather.vue";
 import Account from "components/Account.vue";
 import { useWeatherStore } from "src/stores/weather-store";
@@ -207,8 +207,7 @@ export default {
     }
 
     return {
-      fabYoutube,
-
+      ionSchool,
       leftDrawerOpen,
       search,
 
@@ -226,7 +225,7 @@ export default {
         { icon: "thumb_up_alt", text: "Liked videos" },
       ],
       links3: [
-        { icon: fabYoutube, text: "YouTube Premium" },
+        { icon: ionSchool, text: "School Aboreyhan" },
         { icon: "local_movies", text: "Movies & Shows" },
         { icon: "videogame_asset", text: "Gaming" },
         { icon: "live_tv", text: "Live" },

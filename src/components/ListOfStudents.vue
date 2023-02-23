@@ -74,12 +74,6 @@ export default {
   },
 
   methods: {
-    // async DelStudents() {
-    //   console.log("S");
-    //   console.log((await api.get(`/delstudents`)).data);
-    //   console.log("E");
-    // },
-
     async getdata() {
       const data = (await api.get(`/students`)).data;
       console.log(typeof data);
