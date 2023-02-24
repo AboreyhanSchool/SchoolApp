@@ -105,6 +105,14 @@ export default {
 
       if (delResult == "User deleted") {
         this.UserDeleted = true
+
+        selectedStudents.forEach((student)=>{
+        let indexfordel =  this.rows.findIndex((row)=>{
+             console.log(row)
+              return row.NationalCode === student
+          })
+        this.rows.splice(indexfordel,1)
+        })
       }
       if(delResult == "select a user"){
         this.SelectedAUser = true
