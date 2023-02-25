@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <alert-dialog 
+    <alert-dialog
       v-if="UserAdded"
       title="کاربر ازافه شد !"
       message="برای بازگشت کلیک کنید."
@@ -32,7 +32,7 @@
         </template>
       </alert-dialog>
 
-      <alert-dialog 
+      <alert-dialog
       v-if="UserNotAdded"
       title="کل فورم را پر کنید !!"
       message="برای بازگشت کلیک کنید."
@@ -43,7 +43,7 @@
         </template>
       </alert-dialog>
 
-      <alert-dialog 
+      <alert-dialog
       v-if="UserFiledAdded"
       title="کاربری با این کد ملی وجود دارد !!"
       message="برای بازگشت کلیک کنید."
@@ -53,14 +53,15 @@
         <q-btn flat label="باش" v-close-popup />
         </template>
       </alert-dialog>
-      
-      
+
+
   </q-page>
 </template>
 
 <script>
 import DatePicker from 'vue3-persian-datetime-picker'
 import {ref} from 'vue'
+import {api} from 'src/boot/axios'
 import AlertDialog from 'src/components/AlertDialog.vue';
 export default {
   setup() {
