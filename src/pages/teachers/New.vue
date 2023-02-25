@@ -7,25 +7,106 @@
     <div class="login-page ">
       <div class="form ">
         <form class="register-form q-pa-lg q-col-gutter-y-sm">
-          <q-input type="text" outlined label="نام کاربری"/>
-          <q-input type="text" outlined label="نام خوانوادگی"/>
-          <q-input outlined label="کد ملی"/>
-          <q-input type="password" outlined label="رمز عبور"/>
-          <div><button  >حساب معلم ساخته شود</button></div>
+          <q-input v-model="teacher.firstname" type="text" outlined label="نام "/>
+          <q-input v-model="teacher.lastname" type="text" outlined label="نام خوانوادگی"/>
+          <q-input v-model="teacher.nationalCode" outlined label="کد ملی"/>
+          <date-picker v-model="teacher.birthDate"  placeholder='تاریخ تولد شما ؟' min="1340/00/00" max="1402/00/00"></date-picker>
+          <div>      <q-btn
+        class="col-sm-3 col-xs-12"
+        color="primary"
+        label="حساب معلم ساخته شود"
+        @click="sendTeacher"
+      /></div>
         </form>
       </div>
     </div>
 
+    <alert-dialog 
+      v-if="UserAdded"
+      title="کاربر ازافه شد !"
+      message="برای بازگشت کلیک کنید."
+      bgColor="green"
+      textColor="white">
+        <template v-slot:actions>
+        <q-btn flat label="باش" v-close-popup />
+        </template>
+      </alert-dialog>
+
+      <alert-dialog 
+      v-if="UserNotAdded"
+      title="کل فورم را پر کنید !!"
+      message="برای بازگشت کلیک کنید."
+      bgColor="red"
+      textColor="white">
+        <template v-slot:actions>
+        <q-btn flat label="باش" v-close-popup />
+        </template>
+      </alert-dialog>
+
+      <alert-dialog 
+      v-if="UserFiledAdded"
+      title="کاربری با این کد ملی وجود دارد !!"
+      message="برای بازگشت کلیک کنید."
+      bgColor="red"
+      textColor="white">
+        <template v-slot:actions>
+        <q-btn flat label="باش" v-close-popup />
+        </template>
+      </alert-dialog>
+      
+      
   </q-page>
 </template>
 
 <script>
+import DatePicker from 'vue3-persian-datetime-picker'
+import {ref} from 'vue'
+import AlertDialog from 'src/components/AlertDialog.vue';
 export default {
-  data() {
+  setup() {
     return {
+      teacher: ref({
+        nationalCode:'',
+        firstname:'',
+        lastname:'',
+        birthDate:'',
+      }),
+
+      UserAdded:ref(false),
+      UserNotAdded:ref(false),
+      UserFiledAdded:ref(false)
+
     }
   },
+  components:{
+    DatePicker,
+    AlertDialog
+  },
+  methods: {
+    async sendTeacher() {
+      if(this.teacher.birthDate != '' || this.teacher.firstname != '' || this.teacher.lastname != '' || this.teacher.nationalCode != ''){
+        let res = (await api.post("/teacher", this.teacher)).data;
+        if(res === true){
+          this.UserAdded = true
+        }else{
+          this.UserFiledAdded = true
+        }
+
+      }else{
+          this.UserNotAdded = true
+      }
+      function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+      }
+      sleep(5000).then(() => {
+          this.UserNotAdded = false
+          this.UserAdded = false
+          this.UserFiledAdded = false
+      })
+    }
+  }
 }
+
 </script>
 
 <style scoped>

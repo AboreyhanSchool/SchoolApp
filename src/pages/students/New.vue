@@ -34,10 +34,39 @@
         label="ارسال"
         @click="sendStudent"
       />
+      <alert-dialog 
+      v-if="UserAdded"
+      title="کاربر ازافه شد !"
+      message="برای بازگشت کلیک کنید."
+      bgColor="green"
+      textColor="white">
+        <template v-slot:actions>
+        <q-btn flat label="باش" v-close-popup />
+        </template>
+      </alert-dialog>
 
-      <user-added  v-if="UserAdded" />
-      <user-not-added  v-if="UserNotAdded"/>
-      <user-filed-added v-if="UserFiledAdded" />
+      <alert-dialog 
+      v-if="UserNotAdded"
+      title="کل فورم را پر کنید !!"
+      message="برای بازگشت کلیک کنید."
+      bgColor="red"
+      textColor="white">
+        <template v-slot:actions>
+        <q-btn flat label="باش" v-close-popup />
+        </template>
+      </alert-dialog>
+
+      <alert-dialog 
+      v-if="UserFiledAdded"
+      title="کاربری با این کد ملی وجود دارد !!"
+      message="برای بازگشت کلیک کنید."
+      bgColor="red"
+      textColor="white">
+        <template v-slot:actions>
+        <q-btn flat label="باش" v-close-popup />
+        </template>
+      </alert-dialog>
+
     </div>
   </q-page>
 </template>
@@ -45,9 +74,7 @@
 <script>
 import { api } from "src/boot/axios";
 import { ref } from '@vue/reactivity';
-import UserAdded from 'components/UserAdded.vue'
-import UserNotAdded from 'components/UserNotAdded.vue'
-import UserFiledAdded from 'components/UserFiledAdded.vue'
+import AlertDialog from "components/AlertDialog.vue";
 import DatePicker from 'vue3-persian-datetime-picker'
 export default {
   setup() {
@@ -67,9 +94,7 @@ export default {
   },
   components:{
     DatePicker,
-    UserAdded,
-    UserNotAdded,
-    UserFiledAdded
+    AlertDialog,
   },
   methods: {
     async sendStudent() {
@@ -87,7 +112,7 @@ export default {
       function sleep (time) {
         return new Promise((resolve) => setTimeout(resolve, time));
       }
-      sleep(3000).then(() => {
+      sleep(5000).then(() => {
           this.UserNotAdded = false
           this.UserAdded = false
           this.UserFiledAdded = false

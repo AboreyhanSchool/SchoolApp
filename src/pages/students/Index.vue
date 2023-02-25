@@ -8,7 +8,7 @@
     />
     <!--  ListOfStudents  -->
 
-    <ListOfStudents />
+    <List title="لیست دانش آموزان" type="دانش آموز" noaGet="students" noaPost="student"  />
 
     <!--  ListOfStudents  /-->
 
@@ -18,7 +18,7 @@
 
 <script>
 import { ref } from 'vue'
-import  ListOfStudents  from 'components/ListOfStudents.vue';
+import  List  from 'src/components/List.vue';
 
 export default {
   name: "students",
@@ -28,7 +28,7 @@ export default {
     };
   },
   components:{
-    ListOfStudents
+    List
   }
 };
 </script>

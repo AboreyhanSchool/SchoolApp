@@ -2,7 +2,7 @@
   <div v-if="rows">
     <div class="q-pa-md">
       <q-table
-        title="لیست دانش آموزان"
+        :title="title"
         :rows="rows"
         v-model="btndel"
         :columns="columns"
@@ -19,20 +19,20 @@
       label="حذف"
     />
 
-    <user-deleted
+    <alert-dialog
       v-if="deleteConfirm"
       title="حذف دانش آموز"
-      message="آیا از حذف این دانش آموز(ها) مطمئن هستید؟"
+      :message=" 'مطمئن هستید (ها)'+ type+ 'آیا از حذف ' "
       bgColor="red"
       textColor="white"
     >
       <template v-slot:actions>
         <q-btn flat label="خیر" v-close-popup @click="deleteConfirm = false" />
-        <q-btn flat label="بله" v-close-popup @click="delStudents" />
+        <q-btn flat label="بله" v-close-popup @click="deleted" />
       </template>
-    </user-deleted>
-    <user-deleted
-      v-if="UserDeleted"
+    </alert-dialog>
+    <alert-dialog
+      v-if="AlertDialog"
       title="حذف شد"
       message="برای بازگشت کلیک کنید."
       bgColor="green"
@@ -41,7 +41,7 @@
       <template v-slot:actions>
         <q-btn flat label="باش" v-close-popup />
       </template>
-    </user-deleted>
+    </alert-dialog>
     <selected-a-user v-if="SelectedAUser" />
   </div>
 
@@ -51,7 +51,7 @@
 <script>
 import { ref } from "vue";
 import { api } from "src/boot/axios";
-import UserDeleted from "components/UserDeleted.vue";
+import AlertDialog from "components/AlertDialog.vue";
 import SelectedAUser from "components/SelectedAUser.vue";
 
 const columns = [
@@ -90,10 +90,17 @@ export default {
       deleteConfirm: ref(false),
 
       // reacts //
-      UserDeleted: ref(false),
+      AlertDialog: ref(false),
       SelectedAUser: ref(false),
     };
   },
+  props:{
+    title:String,
+    type:String,
+    noaPost:String,
+    noaGet:String,
+  },
+
 
   beforeMount() {
     this.getdata();
@@ -101,7 +108,7 @@ export default {
 
   methods: {
     async getdata() {
-      const data = (await api.get(`/students`)).data;
+      const data = (await api.get(`/${this.noaGet}`)).data;
       console.log(typeof data);
       this.rows = typeof data === "object" ? data : false;
     },
@@ -117,25 +124,25 @@ export default {
         } selected of ${this.rows.length}`;
       }
     },
-    async delStudents() {
+    async deleted() {
       let Userdelete = "";
       console.log("S");
 
-      var selectedStudents = this.selectedRows.map((x) => x.NationalCode);
-      console.log("selectedStudents", selectedStudents);
+      var selectedUsers = this.selectedRows.map((x) => x.NationalCode);
+      console.log("selectedUsers", selectedUsers);
 
-      if (selectedStudents.length > 0) {
+      if (selectedUsers.length > 0) {
         const delResult = (
-          await api.delete(`/delstudents`, { data: selectedStudents })
+          await api.delete(`/del${this.noaPost}`, { data: selectedUsers })
         ).data;
 
         if (delResult == "User deleted") {
-          this.UserDeleted = true;
+          this.AlertDialog = true;
 
-          selectedStudents.forEach((student) => {
+          selectedUsers.forEach((user) => {
             let indexfordel = this.rows.findIndex((row) => {
               console.log(row);
-              return row.NationalCode === student;
+              return row.NationalCode === user;
             });
             this.rows.splice(indexfordel, 1);
           });
@@ -145,7 +152,7 @@ export default {
           return new Promise((resolve) => setTimeout(resolve, time));
         }
         sleep(3000).then(() => {
-          this.UserDeleted = false;
+          this.AlertDialog = false;
           this.SelectedAUser = false;
         });
       } else {
@@ -154,7 +161,7 @@ export default {
     },
   },
   components: {
-    UserDeleted,
+    AlertDialog,
     SelectedAUser,
   },
 };
