@@ -1,17 +1,27 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-dialog v-model="persistent" persistent transition-show="scale" transition-hide="scale">
-      <q-card class="bg-green text-white" style="width: 300px">
+    <q-dialog
+      v-model="persistent"
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+    >
+      <q-card
+        :class="'bg-' + bgColor + ' text-' + textColor"
+        style="width: 300px"
+      >
         <q-card-section>
-          <div class="text-h6">حذف شد !!</div>
+          <div class="text-h6">{{ title }}</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          برای بازگشت کلیک کنید.
+          {{ message }}
         </q-card-section>
 
         <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn flat label="باش" v-close-popup />
+          <slot name="actions">
+
+          </slot>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -19,15 +29,20 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 
 export default {
-  name:"UserNotAdded",
-  setup () {
-    return {
-      persistent: ref(true)
-    }
+  name: "UserNotAdded",
+  props: {
+    title:String,
+    message:String,
+    bgColor:String,
+    textColor:String,
   },
-
-}
+  setup() {
+    return {
+      persistent: ref(true),
+    };
+  },
+};
 </script>
