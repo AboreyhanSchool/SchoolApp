@@ -32,7 +32,6 @@ export default {
     title:String,
     rows:Array,
     columns:Array,
-
   },
   methods:{
 
