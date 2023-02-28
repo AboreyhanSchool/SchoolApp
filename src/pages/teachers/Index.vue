@@ -82,7 +82,7 @@ export default {
   name:'teachers',
   setup(){
     return{
-      selectedRows: [],
+      selectedRows: ref([]),
       columns,
       rows: ref([]),
       btndel: ref(false),
