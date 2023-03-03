@@ -12,9 +12,43 @@
 
     <!--  ListOfStudents  -->
 
+<<<<<<< HEAD
     <List v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست دانش آموز ها" />
+=======
+    <List v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست دانش آموزان"  />
+>>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
 
     <!--  ListOfStudents  /-->
+    <q-btn
+
+@click="deleteConfirm = true"
+color="red"
+label="حذف"
+/>
+<alert-dialog
+v-if="deleteConfirm"
+title="حذف معلم"
+message=" آیا از حذف دانش آموز (ها) مطمئن هستید !! "
+bgColor="red"
+textColor="white"
+>
+<template v-slot:actions>
+<q-btn flat label="خیر" v-close-popup @click="deleteConfirm = false" />
+<q-btn flat label="بله" v-close-popup @click="deleted" />
+</template>
+</alert-dialog>
+<alert-dialog
+v-if="AlertDialog"
+title="حذف شد"
+message="برای بازگشت کلیک کنید."
+bgColor="green"
+textColor="white"
+>
+<template v-slot:actions>
+<q-btn flat label="باش" v-close-popup />
+</template>
+</alert-dialog>
+<selected-a-user v-if="SelectedAUser" />
 
     <div >
       <q-btn :to='{name:"StudentsNew"}'  :style="{backgroundColor:'#8abc00'}" label="دانش‌آموز جدید"></q-btn>
@@ -57,9 +91,18 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import { ref } from 'vue'
 import  List  from 'src/components/List.vue';
 import { api } from "src/boot/axios";
+=======
+import List from 'src/components/List.vue';
+import { ref } from "vue";
+import { api } from "src/boot/axios";
+import AlertDialog from "components/AlertDialog.vue";
+import SelectedAUser from "components/SelectedAUser.vue";
+
+>>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
 
 const columns = [
   {
@@ -86,19 +129,28 @@ const columns = [
   },
   { name: "BirthDate", align: "left", label: "روز تولد", field: "BirthDate" },
 ];
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
 
 export default {
   name: "students",
   setup() {
+<<<<<<< HEAD
     return {
       students: ref([]),
       selectedRows: [],
+=======
+    return{
+      selectedRows: ref([]),
+>>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
       columns,
       rows: ref([]),
       btndel: ref(false),
       deleteConfirm: ref(false),
+<<<<<<< HEAD
       search: ref(""),
       isFind: ref(""),
 
@@ -115,6 +167,21 @@ export default {
     async getdata() {
       console.log("sda")
       const data = (await api.get("/students")).data;
+=======
+
+      // reacts //
+      AlertDialog: ref(false),
+      SelectedAUser: ref(false),
+    }
+  },
+
+  beforeMount() {
+    this.getdata();
+  },
+  methods: {
+    async getdata() {
+      const data = (await api.get(`/students`)).data;
+>>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
       console.log(typeof data);
       this.rows = typeof data === "object" ? data : false;
     },
@@ -162,6 +229,7 @@ export default {
         this.AlertDialog = false;
       }
     },
+<<<<<<< HEAD
   async searching(){
       if(this.search != ""){
         this.rows = (await api.get(`/students`)).data
@@ -200,6 +268,12 @@ export default {
   },
 
   components:{
+=======
+  },
+  components: {
+    AlertDialog,
+    SelectedAUser,
+>>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
     List
   }
 };
