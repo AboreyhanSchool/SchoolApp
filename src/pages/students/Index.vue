@@ -129,6 +129,8 @@ export default {
       rows: ref([]),
       btndel: ref(false),
       deleteConfirm: ref(false),
+      search: ref(""),
+      isFind: ref(""),
 
       // reacts //
       AlertDialog: ref(false),
@@ -189,6 +191,40 @@ export default {
         this.AlertDialog = false;
       }
     },
+    async searching(){
+      if(this.search != ""){
+        this.rows = (await api.get(`/teachers`)).data
+        let ListFindSearch = []
+        this.rows.forEach((row)=>{
+        let RegexObj = new RegExp(`.*${this.search}.*`,"g")
+        console.log(RegexObj)
+        if(RegexObj.exec(row.Firstname) != undefined ){
+          ListFindSearch.push(row)
+        }
+        if(RegexObj.exec(row.NationalCode) != undefined ){
+          ListFindSearch.push(row)
+        }
+        if(RegexObj.exec(row.Lastname) != undefined ){
+          ListFindSearch.push(row)
+        }
+
+        })
+      if (ListFindSearch.length > 0) {
+      console.log(ListFindSearch[0])
+      console.log(this.rows)
+      this.rows = ListFindSearch
+      this.isFind = "پیدا شد"
+      }else{
+        this.rows = []
+        this.isFind = "پیدا نشد"
+      }
+
+    }else{
+      this.getdata()
+      this.isFind = ""
+      console.log("else")
+    }
+  }
   },
   components: {
     AlertDialog,
