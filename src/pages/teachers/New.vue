@@ -86,7 +86,7 @@ export default {
   methods: {
     async sendTeacher() {
       if(this.teacher.birthDate != '' || this.teacher.firstname != '' || this.teacher.lastname != '' || this.teacher.nationalCode != ''){
-        let res = (await api.post("/teacher", this.teacher)).data;
+        let res = (await api.post("/teachers", this.teacher)).data;
         if(res === true){
           this.UserAdded = true
         }else{

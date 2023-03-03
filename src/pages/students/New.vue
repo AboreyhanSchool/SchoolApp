@@ -34,7 +34,7 @@
         label="ارسال"
         @click="sendStudent"
       />
-      <alert-dialog 
+      <alert-dialog
       v-if="UserAdded"
       title="کاربر ازافه شد !"
       message="برای بازگشت کلیک کنید."
@@ -45,7 +45,7 @@
         </template>
       </alert-dialog>
 
-      <alert-dialog 
+      <alert-dialog
       v-if="UserNotAdded"
       title="کل فورم را پر کنید !!"
       message="برای بازگشت کلیک کنید."
@@ -56,7 +56,7 @@
         </template>
       </alert-dialog>
 
-      <alert-dialog 
+      <alert-dialog
       v-if="UserFiledAdded"
       title="کاربری با این کد ملی وجود دارد !!"
       message="برای بازگشت کلیک کنید."
@@ -99,7 +99,7 @@ export default {
   methods: {
     async sendStudent() {
       if(this.student.birthDate != '' || this.student.firstname != '' || this.student.lastname != '' || this.student.nationalCode != ''){
-        let res = (await api.post("/student", this.student)).data;
+        let res = (await api.post("/students", this.student)).data;
         if(res === true){
           this.UserAdded = true
         }else{

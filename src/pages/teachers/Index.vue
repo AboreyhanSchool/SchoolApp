@@ -1,9 +1,18 @@
 <template>
-      <q-page class="flex flex-center">
-          <q-btn :to='{name:"TeachersNew"}'  :style="{backgroundColor:'#8abc00'}" label="ثبت معلم جدید"></q-btn>
+      <q-page >
+
+          <q-input style="margin-top: 2%; margin-left: 60%;"
+          v-model="search"
+          :onkeyup="searching"
+          filled
+          placeholder="جست وجو"
+          :hint=" 'معلم : ' + search+ ' ' + isFind"
+
+       />
 
         <List  v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست معلم ها"  />
-
+        <div style="">
+        <q-btn :to='{name:"TeachersNew"}'  :style="{backgroundColor:'#8abc00'}" label="ثبت معلم جدید"></q-btn>
 
    <q-btn
 
@@ -11,6 +20,7 @@
         color="red"
         label="حذف"
       />
+    </div>
     <alert-dialog
     v-if="deleteConfirm"
     title="حذف معلم"
@@ -18,6 +28,7 @@
     bgColor="red"
     textColor="white"
   >
+
     <template v-slot:actions>
       <q-btn flat label="خیر" v-close-popup @click="deleteConfirm = false" />
       <q-btn flat label="بله" v-close-popup @click="deleted" />
@@ -87,6 +98,9 @@ export default {
       rows: ref([]),
       btndel: ref(false),
       deleteConfirm: ref(false),
+      search: ref(""),
+      isFind: ref(""),
+
 
       // reacts //
       AlertDialog: ref(false),
@@ -117,7 +131,7 @@ export default {
 
       if (selectedUsers.length > 0) {
         const delResult = (
-          await api.delete(`/delteacher`, { data: selectedUsers })
+          await api.delete(`/teachers`, { data: selectedUsers })
         ).data;
 
         if (delResult == "User deleted") {
@@ -147,6 +161,40 @@ export default {
         this.AlertDialog = false;
       }
     },
+   async searching(){
+      if(this.search != ""){
+        this.rows = (await api.get(`/teachers`)).data
+        let ListFindSearch = []
+        this.rows.forEach((row)=>{
+        let RegexObj = new RegExp(`.*${this.search}.*`,"g")
+        console.log(RegexObj)
+        if(RegexObj.exec(row.Firstname) != undefined ){
+          ListFindSearch.push(row)
+        }
+        if(RegexObj.exec(row.NationalCode) != undefined ){
+          ListFindSearch.push(row)
+        }
+        if(RegexObj.exec(row.Lastname) != undefined ){
+          ListFindSearch.push(row)
+        }
+
+        })
+      if (ListFindSearch.length > 0) {
+      console.log(ListFindSearch[0])
+      console.log(this.rows)
+      this.rows = ListFindSearch
+      this.isFind = "پیدا شد"
+      }else{
+        this.rows = []
+        this.isFind = "پیدا نشد"
+      }
+
+    }else{
+      this.getdata()
+      this.isFind = ""
+      console.log("else")
+    }
+  }
   },
   components: {
     AlertDialog,
