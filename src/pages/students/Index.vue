@@ -12,11 +12,7 @@
 
     <!--  ListOfStudents  -->
 
-<<<<<<< HEAD
-    <List v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست دانش آموز ها" />
-=======
     <List v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست دانش آموزان"  />
->>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
 
     <!--  ListOfStudents  /-->
     <q-btn
@@ -91,18 +87,12 @@ textColor="white"
 </template>
 
 <script>
-<<<<<<< HEAD
-import { ref } from 'vue'
-import  List  from 'src/components/List.vue';
-import { api } from "src/boot/axios";
-=======
 import List from 'src/components/List.vue';
 import { ref } from "vue";
 import { api } from "src/boot/axios";
 import AlertDialog from "components/AlertDialog.vue";
 import SelectedAUser from "components/SelectedAUser.vue";
 
->>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
 
 const columns = [
   {
@@ -129,45 +119,16 @@ const columns = [
   },
   { name: "BirthDate", align: "left", label: "روز تولد", field: "BirthDate" },
 ];
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
 
 export default {
   name: "students",
   setup() {
-<<<<<<< HEAD
-    return {
-      students: ref([]),
-      selectedRows: [],
-=======
     return{
       selectedRows: ref([]),
->>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
       columns,
       rows: ref([]),
       btndel: ref(false),
       deleteConfirm: ref(false),
-<<<<<<< HEAD
-      search: ref(""),
-      isFind: ref(""),
-
-      // react //
-      AlertDialog: ref(false),
-      SelectedAUser: ref(false),
-    };
-  },
-  beforeMount(){
-    this.getdata()
-  }
-  ,
-  methods: {
-    async getdata() {
-      console.log("sda")
-      const data = (await api.get("/students")).data;
-=======
 
       // reacts //
       AlertDialog: ref(false),
@@ -181,7 +142,6 @@ export default {
   methods: {
     async getdata() {
       const data = (await api.get(`/students`)).data;
->>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
       console.log(typeof data);
       this.rows = typeof data === "object" ? data : false;
     },
@@ -229,51 +189,10 @@ export default {
         this.AlertDialog = false;
       }
     },
-<<<<<<< HEAD
-  async searching(){
-      if(this.search != ""){
-        this.rows = (await api.get(`/students`)).data
-        let ListFindSearch = []
-        this.rows.forEach((row)=>{
-        let RegexObj = new RegExp(`.*${this.search}.*`,"g")
-        console.log(RegexObj)
-        if(RegexObj.exec(row.Firstname) != undefined ){
-          ListFindSearch.push(row)
-        }
-        if(RegexObj.exec(row.NationalCode) != undefined ){
-          ListFindSearch.push(row)
-        }
-        if(RegexObj.exec(row.Lastname) != undefined ){
-          ListFindSearch.push(row)
-        }
-
-
-      })
-      if (ListFindSearch.length > 0) {
-      console.log(ListFindSearch[0])
-      console.log(this.rows)
-      this.rows = ListFindSearch
-      this.isFind = "پیدا شد"
-      }else{
-        this.rows = []
-        this.isFind = "پیدا نشد"
-      }
-
-    }else{
-      this.getdata()
-      this.isFind = ""
-      console.log("else")
-    }
-  }
-  },
-
-  components:{
-=======
   },
   components: {
     AlertDialog,
     SelectedAUser,
->>>>>>> 50ef263a156e58f3efae21f8f7b4681c3e3e39dd
     List
   }
 };
