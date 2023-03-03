@@ -15,15 +15,9 @@
     <List v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست دانش آموزان"  />
 
     <!--  ListOfStudents  /-->
-    <q-btn
-
-@click="deleteConfirm = true"
-color="red"
-label="حذف"
-/>
 <alert-dialog
 v-if="deleteConfirm"
-title="حذف معلم"
+title="حذف دانش اموز"
 message=" آیا از حذف دانش آموز (ها) مطمئن هستید !! "
 bgColor="red"
 textColor="white"
@@ -193,7 +187,7 @@ export default {
     },
     async searching(){
       if(this.search != ""){
-        this.rows = (await api.get(`/teachers`)).data
+        this.rows = (await api.get(`/students`)).data
         let ListFindSearch = []
         this.rows.forEach((row)=>{
         let RegexObj = new RegExp(`.*${this.search}.*`,"g")
