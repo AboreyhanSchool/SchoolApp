@@ -62,14 +62,13 @@ import SelectedAUser from "components/SelectedAUser.vue";
 
 
 const columns = [
+
+
   {
-    name: "desc",
-    required: true,
-    label: "نام",
+    name: "Firstname",
     align: "left",
-    field: (row) => row.Firstname,
-    format: (val) => `${val}`,
-    sortable: true,
+    label: "نام ",
+    field: "Firstname",
   },
 
   {
@@ -114,7 +113,7 @@ export default {
   methods: {
     async getdata() {
       const data = (await api.get(`/teachers`)).data;
-      console.log(typeof data);
+      console.log(data);
       this.rows = typeof data === "object" ? data : false;
     },
     updateRowSelect(rowselect){
