@@ -26,15 +26,9 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '',name: 'StudentsIndex', component: () => import('pages/students/Index.vue') },
-      { path: 'new',name: 'StudentsNew' , component: () => import('pages/students/New.vue') }
-    ]
-  },
-  ,
-  {
-    path: '/student/:nationalCode',name:'student',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '',name: 'StudentIndex', component: () => import('pages/students/StudentIndex.vue') }
+      { path: 'new',name: 'StudentsNew' , component: () => import('pages/students/New.vue') },
+      { path: '/:nationalCode',name: 'StudentIndex', component: () => import('pages/students/StudentIndex.vue') },
+      { path: '/edit/:nationalCode',name: 'studentEdit', component: () => import('pages/students/edit.vue') }
     ]
   },
   {
@@ -42,7 +36,8 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '',name:'TeachersIndex', component: () => import('pages/teachers/Index.vue') },
-      { path: 'new',name:'TeachersNew', component: () => import('pages/teachers/New.vue') }
+      { path: 'new',name:'TeachersNew', component: () => import('pages/teachers/New.vue') },
+      { path: 'edit/:nationalCode',name: 'teacherEdit', component: () => import('pages/teachers/edit.vue') }
     ]
   },
   {

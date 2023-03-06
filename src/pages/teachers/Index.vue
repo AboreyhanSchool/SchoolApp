@@ -10,7 +10,7 @@
 
        />
 
-        <List  v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست معلم ها"  />
+        <List  @removed="remove" @edited="edite"  :columns="columns" v-model:rows="rows" title="لیست معلم ها"  />
         <div style="">
         <q-btn :to='{name:"TeachersNew"}'  :style="{backgroundColor:'#8abc00'}" label="ثبت معلم جدید"></q-btn>
 
@@ -84,6 +84,7 @@ const columns = [
     field: "NationalCode",
   },
   { name: "BirthDate", align: "left", label: "روز تولد", field: "BirthDate" },
+  {name:"edit",align:"left",label:"ویرایش",filed:"edit"}
 ];
 
 
@@ -121,28 +122,23 @@ export default {
       this.selectedRows = rowselect
     }
     ,
-    async deleted() {
+    async remove(NationalCode) {
       let Userdelete = "";
       console.log("S");
 
-      var selectedUsers = this.selectedRows.map((x) => x.NationalCode);
-      console.log("selectedUsers", selectedUsers);
-
-      if (selectedUsers.length > 0) {
-        const delResult = (
-          await api.delete(`/teachers`, { data: selectedUsers })
+      if (this.rows.length > 0) {
+        const removeResult = (
+          await api.delete(`/teachers/`,{params :{nationalCode: NationalCode}})
         ).data;
-
-        if (delResult == "User deleted") {
+        console.log(NationalCode)
+        if (removeResult == "User deleted") {
           this.AlertDialog = true;
 
-          selectedUsers.forEach((user) => {
             let indexfordel = this.rows.findIndex((row) => {
               console.log(row);
-              return row.NationalCode === user;
+              return row.NationalCode === NationalCode;
             });
             this.rows.splice(indexfordel, 1);
-          });
         }
 
         function sleep(time) {
@@ -159,6 +155,10 @@ export default {
         this.SelectedAUser = true;
         this.AlertDialog = false;
       }
+    },
+    edite(NationalCode){
+      console.log(NationalCode)
+      this.$router.push({ name: 'teacherEdit',params: { nationalCode: NationalCode } })
     },
    async searching(){
       if(this.search != ""){

@@ -9,7 +9,7 @@
       row-key="NationalCode"
     >
       <template v-slot:body="props">
-        <q-tr  @mouseover="showEdit(props.row)" @mouseleave="notshow(props.row)" :props="props"  @click="onRowClick(props.row)">
+        <q-tr  @mouseover="showEdit(props.row.NationalCode)" @mouseleave="notshow(props.row.NationalCode)" :props="props" >
           <q-td key="Firstname" :props="props">
             <q-badge color="green">
               {{ props.row.Firstname }}
@@ -30,9 +30,9 @@
               {{ props.row.BirthDate }}
             </q-badge>
           </q-td>
-          <q-td id="edit" class="edit" key="NationalCode" :props="props">
-              <q-btn  class="show"  color="red" label="حذف" />
-              <q-btn  class="show"  color="green"  label="ویرایش" />
+          <q-td style="display: none;" :id="'E'+props.row.NationalCode" key="edit" :props="props">
+              <q-btn @click="removed(props.row.NationalCode)" color="red" label="حذف" />
+              <q-btn @click="edited(props.row.NationalCode)"  color="green"  label="ویرایش" />
           </q-td>
         </q-tr>
       </template>
@@ -73,24 +73,28 @@ export default {
         } selected of ${this.rows.length}`;
       }
     },
-    showEdit(row){
-      console.log(row)
-      let columnElement =  this.$el.querySelector("#edit")
-      console.log(columnElement)
+    showEdit(NationalCode){
+      let columnElement =  this.$el.querySelector(`#E${NationalCode}`)
 
-      //columnelement[index].style.display = "block"
+      columnElement.style.display = "block"
 
 
     },
-    notshow(row){
-      console.log(row)
-      let columnElement =  this.$el.querySelector("#edit")
-      console.log(columnElement)
+    notshow(NationalCode){
+
+      let columnElement =  this.$el.querySelector(`#E${NationalCode}`)
+
+      columnElement.style.display = "none"
 
 
-      //columnElement[index].style.display = "none"
-
-
+    },
+    removed(NationalCode){
+      let ForvardNationalCode = NationalCode
+      this.$emit("removed",ForvardNationalCode)
+    },
+    edited(NationalCode){
+      let ForvardNationalCode = NationalCode
+      this.$emit("edited", ForvardNationalCode)
     }
   },
   watch:{

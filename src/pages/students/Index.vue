@@ -12,7 +12,7 @@
 
     <!--  ListOfStudents  -->
 
-    <List v-model:selected="selectedRows" @selected="updateRowSelect" :columns="columns" v-model:rows="rows" title="لیست دانش آموزان"  />
+    <List  @removed="remove" @edited="edite"  :columns="columns" v-model:rows="rows" title="لیست دانش آموز ها"  />
 
     <!--  ListOfStudents  /-->
 <alert-dialog
@@ -90,13 +90,10 @@ import SelectedAUser from "components/SelectedAUser.vue";
 
 const columns = [
   {
-    name: "desc",
-    required: true,
-    label: "نام",
+    name: "Firstname",
     align: "left",
-    field: (row) => row.Firstname,
-    format: (val) => `${val}`,
-    sortable: true,
+    label: "نام ",
+    field: "Firstname",
   },
 
   {
@@ -112,6 +109,7 @@ const columns = [
     field: "NationalCode",
   },
   { name: "BirthDate", align: "left", label: "روز تولد", field: "BirthDate" },
+  {name:"edit",align:"left",label:"ویرایش",filed:"edit"}
 ];
 
 export default {
@@ -138,7 +136,7 @@ export default {
   methods: {
     async getdata() {
       const data = (await api.get(`/students`)).data;
-      console.log(typeof data);
+
       this.rows = typeof data === "object" ? data : false;
     },
     updateRowSelect(rowselect){
@@ -146,28 +144,23 @@ export default {
       this.selectedRows = rowselect
     }
     ,
-    async deleted() {
+    async remove(NationalCode) {
       let Userdelete = "";
       console.log("S");
 
-      var selectedUsers = this.selectedRows.map((x) => x.NationalCode);
-      console.log("selectedUsers", selectedUsers);
-
-      if (selectedUsers.length > 0) {
-        const delResult = (
-          await api.delete(`/students`, { data: selectedUsers })
+      if (this.rows.length > 0) {
+        const removeResult = (
+          await api.delete(`/students/`,{params :{nationalCode: NationalCode}})
         ).data;
-
-        if (delResult == "User deleted") {
+        console.log(NationalCode)
+        if (removeResult == "User deleted") {
           this.AlertDialog = true;
 
-          selectedUsers.forEach((user) => {
             let indexfordel = this.rows.findIndex((row) => {
               console.log(row);
-              return row.NationalCode === user;
+              return row.NationalCode === NationalCode;
             });
             this.rows.splice(indexfordel, 1);
-          });
         }
 
         function sleep(time) {
@@ -184,6 +177,10 @@ export default {
         this.SelectedAUser = true;
         this.AlertDialog = false;
       }
+    },
+    edite(NationalCode){
+      console.log(NationalCode)
+      this.$router.push({ name: 'studentEdit',params: { nationalCode: NationalCode } })
     },
     async searching(){
       if(this.search != ""){
