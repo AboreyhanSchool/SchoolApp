@@ -77,7 +77,7 @@ textColor="white"
 <script>
 import List from 'src/components/List.vue';
 import { ref } from "vue";
-import studentApi from "src/api/studentApi/studentApi"
+import studentApi from "src/api/studentApi"
 import AlertDialog from "components/AlertDialog.vue";
 import SelectedAUser from "components/SelectedAUser.vue";
 
@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     async getdata() {
-      const data = await studentApi.studensGet();
+      const data = await studentApi.getAll();
 
       this.rows = typeof data === "object" ? data : false;
     },
@@ -141,7 +141,7 @@ export default {
     async remove(NationalCode) {
 
       if (this.rows.length > 0) {
-        const removeResult = await studentApi.studentRemove(NationalCode)
+        const removeResult = await studentApi.remove(NationalCode)
         console.log(NationalCode)
         if (removeResult == "User deleted") {
           this.AlertDialog = true;
@@ -174,7 +174,7 @@ export default {
     },
     async searching(){
       if(this.search != ""){
-        this.rows = await studentApi.studensGet()
+        this.rows = await studentApi.getAll();
         let ListFindSearch = []
         this.rows.forEach((row)=>{
         let RegexObj = new RegExp(`.*${this.search}.*`,"g")

@@ -61,7 +61,7 @@
 <script>
 import DatePicker from 'vue3-persian-datetime-picker'
 import {ref} from 'vue'
-import {api} from 'src/boot/axios'
+import teacherApi from 'src/api/teacherApi';
 import AlertDialog from 'src/components/AlertDialog.vue';
 export default {
   setup() {
@@ -86,7 +86,7 @@ export default {
   methods: {
     async sendTeacher() {
       if(this.teacher.birthDate != '' || this.teacher.firstname != '' || this.teacher.lastname != '' || this.teacher.nationalCode != ''){
-        let res = (await api.post("/teachers", this.teacher)).data;
+        let res = (await teacherApi.post("/teachers", this.teacher)).data;
         if(res === true){
           this.UserAdded = true
         }else{

@@ -50,7 +50,7 @@
 import DatePicker from 'vue3-persian-datetime-picker'
 import {ref} from 'vue'
 import AlertDialog from 'src/components/AlertDialog.vue';
-import teacherApi from 'src/api/teacherApi/teacherApi';
+import teacherApi from 'src/api/teacherApi';
 export default {
   setup() {
     return {
@@ -72,13 +72,13 @@ export default {
   },
 async beforeMount(){
     let nationalCode = this.$route.params.nationalCode
-    this.teacher = await teacherApi.teacherGet(nationalCode)
+    this.teacher = await teacherApi.get(nationalCode)
 
   },
   methods: {
     async editTeacher() {
       if(this.teacher.BirthDate != '' || this.teacher.Firstname != '' || this.teacher.Lastname != '' || this.teacher.NationalCode != ''){
-        let res = await teacherApi.teacherPut(this.teacher.NationalCode,this.teacher);
+        let res = await teacherApi.put(this.teacher.NationalCode,this.teacher);
         console.log(res)
         if(res === true){
           this.UserAdded = true

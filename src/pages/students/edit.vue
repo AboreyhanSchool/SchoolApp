@@ -66,7 +66,7 @@
 import { ref } from '@vue/reactivity';
 import AlertDialog from "components/AlertDialog.vue";
 import DatePicker from 'vue3-persian-datetime-picker'
-import studentApi from "src/api/studentApi/studentApi";
+import studentApi from "src/api/studentApi";
 
 export default {
   setup() {
@@ -90,14 +90,14 @@ export default {
   async beforeMount(){
     let {nationalCode} = this.$route.params
     console.log(nationalCode)
-    this.student = await studentApi.studentGet(nationalCode)
+    this.student = await studentApi.get(nationalCode)
 
 
   },
   methods: {
     async editTeacher() {
       if(this.student.BirthDate != '' || this.student.Firstname != '' || this.student.Lastname != '' || this.student.NationalCode != ''){
-        let res = await studentApi.studentPut(this.student.NationalCode,this.student);
+        let res = await studentApi.put(this.student.NationalCode,this.student);
         console.log(res)
         if(res === true){
           this.UserAdded = true

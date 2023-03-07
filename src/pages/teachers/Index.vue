@@ -1,69 +1,67 @@
 <template>
-      <q-page >
+  <q-page>
+    <q-input
+      style="margin-top: 2%; margin-left: 60%"
+      v-model="search"
+      :onkeyup="searching"
+      filled
+      placeholder="جست وجو"
+      :hint="'معلم : ' + search + ' ' + isFind"
+    />
 
-          <q-input style="margin-top: 2%; margin-left: 60%;"
-          v-model="search"
-          :onkeyup="searching"
-          filled
-          placeholder="جست وجو"
-          :hint=" 'معلم : ' + search+ ' ' + isFind"
+    <List
+      @removed="remove"
+      @edited="edite"
+      :columns="columns"
+      v-model:rows="rows"
+      title="لیست معلم ها"
+    />
+    <div style="">
+      <q-btn
+        :to="{ name: 'TeachersNew' }"
+        :style="{ backgroundColor: '#8abc00' }"
+        label="ثبت معلم جدید"
+      ></q-btn>
 
-       />
-
-        <List  @removed="remove" @edited="edite"  :columns="columns" v-model:rows="rows" title="لیست معلم ها"  />
-        <div style="">
-        <q-btn :to='{name:"TeachersNew"}'  :style="{backgroundColor:'#8abc00'}" label="ثبت معلم جدید"></q-btn>
-
-   <q-btn
-
-        @click="deleteConfirm = true"
-        color="red"
-        label="حذف"
-      />
+      <q-btn @click="deleteConfirm = true" color="red" label="حذف" />
     </div>
     <alert-dialog
-    v-if="deleteConfirm"
-    title="حذف معلم"
-    message=" آیا از حذف معلم (ها) مطمئن هستید !! "
-    bgColor="red"
-    textColor="white"
-  >
-
-    <template v-slot:actions>
-      <q-btn flat label="خیر" v-close-popup @click="deleteConfirm = false" />
-      <q-btn flat label="بله" v-close-popup @click="deleted" />
-    </template>
-  </alert-dialog>
-  <alert-dialog
-    v-if="AlertDialog"
-    title="حذف شد"
-    message="برای بازگشت کلیک کنید."
-    bgColor="green"
-    textColor="white"
-  >
-    <template v-slot:actions>
-      <q-btn flat label="باش" v-close-popup />
-    </template>
-  </alert-dialog>
-  <selected-a-user v-if="SelectedAUser" />
-
-      </q-page>
+      v-if="deleteConfirm"
+      title="حذف معلم"
+      message=" آیا از حذف معلم (ها) مطمئن هستید !! "
+      bgColor="red"
+      textColor="white"
+    >
+      <template v-slot:actions>
+        <q-btn flat label="خیر" v-close-popup @click="deleteConfirm = false" />
+        <q-btn flat label="بله" v-close-popup @click="deleted" />
+      </template>
+    </alert-dialog>
+    <alert-dialog
+      v-if="AlertDialog"
+      title="حذف شد"
+      message="برای بازگشت کلیک کنید."
+      bgColor="green"
+      textColor="white"
+    >
+      <template v-slot:actions>
+        <q-btn flat label="باش" v-close-popup />
+      </template>
+    </alert-dialog>
+    <selected-a-user v-if="SelectedAUser" />
+  </q-page>
 </template>
 
 <script>
-import List from 'src/components/List.vue';
+import List from "src/components/List.vue";
 import { ref } from "vue";
-import teacherApi from 'src/api/teacherApi/teacherApi';
+import teacherApi from "src/api/teacherApi";
 import AlertDialog from "components/AlertDialog.vue";
 import SelectedAUser from "components/SelectedAUser.vue";
 
-
-
-
+//#region   columns
 
 const columns = [
-
-
   {
     name: "Firstname",
     align: "left",
@@ -84,15 +82,15 @@ const columns = [
     field: "NationalCode",
   },
   { name: "BirthDate", align: "left", label: "روز تولد", field: "BirthDate" },
-  {name:"edit",align:"left",label:"ویرایش",filed:"edit"}
+  { name: "edit", align: "left", label: "ویرایش", filed: "edit" },
 ];
 
-
+//#endregion
 
 export default {
-  name:'teachers',
-  setup(){
-    return{
+  name: "teachers",
+  setup() {
+    return {
       selectedRows: ref([]),
       columns,
       rows: ref([]),
@@ -101,11 +99,10 @@ export default {
       search: ref(""),
       isFind: ref(""),
 
-
       // reacts //
       AlertDialog: ref(false),
       SelectedAUser: ref(false),
-    }
+    };
   },
 
   beforeMount() {
@@ -113,22 +110,21 @@ export default {
   },
   methods: {
     async getdata() {
-      this.rows = await teacherApi.teachersGet();
+      this.rows = await teacherApi.getAll();
     },
-    updateRowSelect(rowselect){
-      this.selectedRows = rowselect
-    }
-    ,
+    updateRowSelect(rowselect) {
+      this.selectedRows = rowselect;
+    },
     async remove(NationalCode) {
       if (this.rows.length > 0) {
-        const removeResult = await teacherApi.teacherRemove(NationalCode)
+        const removeResult = await teacherApi.remove(NationalCode);
         if (removeResult == "User deleted") {
           this.AlertDialog = true;
 
-            let indexfordel = this.rows.findIndex((row) => {
-              return row.NationalCode === NationalCode;
-            });
-            this.rows.splice(indexfordel, 1);
+          let indexfordel = this.rows.findIndex((row) => {
+            return row.NationalCode === NationalCode;
+          });
+          this.rows.splice(indexfordel, 1);
         }
 
         function sleep(time) {
@@ -137,62 +133,59 @@ export default {
         sleep(3000).then(() => {
           this.AlertDialog = false;
           this.SelectedAUser = false;
-          this.deleteConfirm= false;
-
+          this.deleteConfirm = false;
         });
       } else {
-        this.deleteConfirm= false;
+        this.deleteConfirm = false;
         this.SelectedAUser = true;
         this.AlertDialog = false;
       }
     },
-    edite(NationalCode){
-      this.$router.push({ name: 'teacherEdit',params: { nationalCode: NationalCode } })
+    edite(NationalCode) {
+      this.$router.push({
+        name: "teacherEdit",
+        params: { nationalCode: NationalCode },
+      });
     },
-   async searching(){
-      if(this.search != ""){
-        this.rows = await teacherApi.teachersGet()
-        let ListFindSearch = []
-        this.rows.forEach((row)=>{
-        let RegexObj = new RegExp(`.*${this.search}.*`,"g")
-        console.log(RegexObj)
-        if(RegexObj.exec(row.Firstname) != undefined ){
-          ListFindSearch.push(row)
+    async searching() {
+      if (this.search != "") {
+        this.rows = await teacherApi.getAll();
+        let ListFindSearch = [];
+        this.rows.forEach((row) => {
+          let RegexObj = new RegExp(`.*${this.search}.*`, "g");
+          console.log(RegexObj);
+          if (RegexObj.exec(row.Firstname) != undefined) {
+            ListFindSearch.push(row);
+          }
+          if (RegexObj.exec(row.NationalCode) != undefined) {
+            ListFindSearch.push(row);
+          }
+          if (RegexObj.exec(row.Lastname) != undefined) {
+            ListFindSearch.push(row);
+          }
+        });
+        if (ListFindSearch.length > 0) {
+          console.log(ListFindSearch[0]);
+          console.log(this.rows);
+          this.rows = ListFindSearch;
+          this.isFind = "پیدا شد";
+        } else {
+          this.rows = [];
+          this.isFind = "پیدا نشد";
         }
-        if(RegexObj.exec(row.NationalCode) != undefined ){
-          ListFindSearch.push(row)
-        }
-        if(RegexObj.exec(row.Lastname) != undefined ){
-          ListFindSearch.push(row)
-        }
-
-        })
-      if (ListFindSearch.length > 0) {
-      console.log(ListFindSearch[0])
-      console.log(this.rows)
-      this.rows = ListFindSearch
-      this.isFind = "پیدا شد"
-      }else{
-        this.rows = []
-        this.isFind = "پیدا نشد"
+      } else {
+        this.getdata();
+        this.isFind = "";
+        console.log("else");
       }
-
-    }else{
-      this.getdata()
-      this.isFind = ""
-      console.log("else")
-    }
-  }
+    },
   },
   components: {
     AlertDialog,
     SelectedAUser,
-    List
+    List,
   },
-
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
