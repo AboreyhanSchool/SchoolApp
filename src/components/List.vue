@@ -8,31 +8,24 @@
       :columns="columns"
       row-key="NationalCode"
     >
+
       <template v-slot:body="props">
         <q-tr  @mouseover="showEdit(props.row.NationalCode)" @mouseleave="notshow(props.row.NationalCode)" :props="props" >
           <q-td key="Firstname" :props="props">
-            <q-badge color="green">
               {{ props.row.Firstname }}
-            </q-badge>
           </q-td>
           <q-td key="Lastname" :props="props">
-            <q-badge color="purple">
               {{ props.row.Lastname }}
-            </q-badge>
           </q-td>
           <q-td key="NationalCode" :props="props">
-            <q-badge color="orange">
               {{ props.row.NationalCode }}
-            </q-badge>
           </q-td>
           <q-td key="BirthDate" :props="props">
-            <q-badge color="green">
               {{ props.row.BirthDate }}
-            </q-badge>
           </q-td>
-          <q-td style="display: none;" :id="'E'+props.row.NationalCode" key="edit" :props="props">
-              <q-btn @click="removed(props.row.NationalCode)" color="red" label="حذف" />
-              <q-btn @click="edited(props.row.NationalCode)"  color="green"  label="ویرایش" />
+          <q-td style="display: none;" :id="'E'+props.row.NationalCode"  key="edit" :props="props">
+              <q-btn @click="removed(props.row.NationalCode)" :icon="ionPersonRemove" color="red" label=" " />
+              <q-btn @click="edited(props.row.NationalCode)" :icon="mdiAccountEdit" color="green" label=" "  />
           </q-td>
         </q-tr>
       </template>
@@ -43,7 +36,8 @@
 
 <script>
 import { ref } from "vue";
-
+import {ionPersonRemove} from "@quasar/extras/ionicons-v6";
+import {mdiAccountEdit} from "@quasar/extras/mdi-v7";
 
 export default {
   setup() {
@@ -51,6 +45,8 @@ export default {
       onRowClick: (row) => alert(`${row.NationalCode} clicked`),
       selectedrow:ref([]),
       btndel:ref(true),
+      ionPersonRemove,
+      mdiAccountEdit
     };
   },
   props:{

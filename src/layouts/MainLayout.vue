@@ -26,21 +26,19 @@
         <q-space />
 
         <div class="YL__toolbar-input-container row no-wrap">
-          <q-input
+        <!-- <q-input
             dense
             outlined
             square
             v-model="search"
             placeholder="جست و جو"
             class="bg-white col"
-          />
-          <q-btn
-            class="YL__toolbar-input-btn"
-            color="grey-3"
-            text-color="grey-8"
-            icon="search"
-            unelevated
-          />
+         />-->
+
+         <q-input color="primary" label="جست و جو">
+            <q-tooltip>Hello</q-tooltip>
+        </q-input>
+
         </div>
 
         <q-space />
@@ -103,6 +101,8 @@
               <q-item-label>{{ link.text }}</q-item-label>
             </q-item-section>
           </q-item>
+
+
 
           <q-separator class="q-my-md" />
 

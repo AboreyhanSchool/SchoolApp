@@ -37,7 +37,7 @@ const routes = [
     children: [
       { path: '',name:'TeachersIndex', component: () => import('pages/teachers/Index.vue') },
       { path: 'new',name:'TeachersNew', component: () => import('pages/teachers/New.vue') },
-      { path: 'edit/:nationalCode',name: 'teacherEdit', component: () => import('pages/teachers/edit.vue') }
+      { path: '/:nationalCode',name: 'teacherEdit', component: () => import('pages/teachers/edit.vue') }
     ]
   },
   {

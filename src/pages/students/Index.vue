@@ -43,12 +43,6 @@ textColor="white"
     <div >
       <q-btn :to='{name:"StudentsNew"}'  :style="{backgroundColor:'#8abc00'}" label="دانش‌آموز جدید"></q-btn>
 
- <q-btn
-
-      @click="deleteConfirm = true"
-      color="red"
-      label="حذف"
-    />
   </div>
   <alert-dialog
   v-if="deleteConfirm"
@@ -83,7 +77,7 @@ textColor="white"
 <script>
 import List from 'src/components/List.vue';
 import { ref } from "vue";
-import { api } from "src/boot/axios";
+import studentApi from "src/api/studentApi/studentApi"
 import AlertDialog from "components/AlertDialog.vue";
 import SelectedAUser from "components/SelectedAUser.vue";
 
@@ -135,7 +129,7 @@ export default {
   },
   methods: {
     async getdata() {
-      const data = (await api.get(`/students`)).data;
+      const data = await studentApi.studensGet();
 
       this.rows = typeof data === "object" ? data : false;
     },
@@ -145,13 +139,9 @@ export default {
     }
     ,
     async remove(NationalCode) {
-      let Userdelete = "";
-      console.log("S");
 
       if (this.rows.length > 0) {
-        const removeResult = (
-          await api.delete(`/students/`,{params :{nationalCode: NationalCode}})
-        ).data;
+        const removeResult = await studentApi.studentRemove(NationalCode)
         console.log(NationalCode)
         if (removeResult == "User deleted") {
           this.AlertDialog = true;
@@ -184,7 +174,7 @@ export default {
     },
     async searching(){
       if(this.search != ""){
-        this.rows = (await api.get(`/students`)).data
+        this.rows = await studentApi.studensGet()
         let ListFindSearch = []
         this.rows.forEach((row)=>{
         let RegexObj = new RegExp(`.*${this.search}.*`,"g")

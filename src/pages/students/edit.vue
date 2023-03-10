@@ -63,10 +63,11 @@
 </template>
 
 <script>
-import { api } from "src/boot/axios";
 import { ref } from '@vue/reactivity';
 import AlertDialog from "components/AlertDialog.vue";
 import DatePicker from 'vue3-persian-datetime-picker'
+import studentApi from "src/api/studentApi/studentApi";
+
 export default {
   setup() {
     return {
@@ -88,14 +89,16 @@ export default {
   },
   async beforeMount(){
     let {nationalCode} = this.$route.params
-    let student = (await api.get("/students/edit/",{params:{nationalCode:nationalCode}})).data
-    this.student = student
+    console.log(nationalCode)
+    this.student = await studentApi.studentGet(nationalCode)
+
+
   },
   methods: {
     async editTeacher() {
       if(this.student.BirthDate != '' || this.student.Firstname != '' || this.student.Lastname != '' || this.student.NationalCode != ''){
-        let res = (await api.post("/students/edit/", this.student)).data;
-
+        let res = await studentApi.studentPut(this.student.NationalCode,this.student);
+        console.log(res)
         if(res === true){
           this.UserAdded = true
         }

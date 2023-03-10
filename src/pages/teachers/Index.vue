@@ -53,7 +53,7 @@
 <script>
 import List from 'src/components/List.vue';
 import { ref } from "vue";
-import { api } from "src/boot/axios";
+import teacherApi from 'src/api/teacherApi/teacherApi';
 import AlertDialog from "components/AlertDialog.vue";
 import SelectedAUser from "components/SelectedAUser.vue";
 
@@ -113,29 +113,19 @@ export default {
   },
   methods: {
     async getdata() {
-      const data = (await api.get(`/teachers`)).data;
-      console.log(data);
-      this.rows = typeof data === "object" ? data : false;
+      this.rows = await teacherApi.teachersGet();
     },
     updateRowSelect(rowselect){
-      console.log(rowselect)
       this.selectedRows = rowselect
     }
     ,
     async remove(NationalCode) {
-      let Userdelete = "";
-      console.log("S");
-
       if (this.rows.length > 0) {
-        const removeResult = (
-          await api.delete(`/teachers/`,{params :{nationalCode: NationalCode}})
-        ).data;
-        console.log(NationalCode)
+        const removeResult = await teacherApi.teacherRemove(NationalCode)
         if (removeResult == "User deleted") {
           this.AlertDialog = true;
 
             let indexfordel = this.rows.findIndex((row) => {
-              console.log(row);
               return row.NationalCode === NationalCode;
             });
             this.rows.splice(indexfordel, 1);
@@ -157,12 +147,11 @@ export default {
       }
     },
     edite(NationalCode){
-      console.log(NationalCode)
       this.$router.push({ name: 'teacherEdit',params: { nationalCode: NationalCode } })
     },
    async searching(){
       if(this.search != ""){
-        this.rows = (await api.get(`/teachers`)).data
+        this.rows = await teacherApi.teachersGet()
         let ListFindSearch = []
         this.rows.forEach((row)=>{
         let RegexObj = new RegExp(`.*${this.search}.*`,"g")

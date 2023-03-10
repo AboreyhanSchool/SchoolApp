@@ -49,8 +49,8 @@
 <script>
 import DatePicker from 'vue3-persian-datetime-picker'
 import {ref} from 'vue'
-import {api} from 'src/boot/axios'
 import AlertDialog from 'src/components/AlertDialog.vue';
+import teacherApi from 'src/api/teacherApi/teacherApi';
 export default {
   setup() {
     return {
@@ -71,15 +71,15 @@ export default {
     AlertDialog
   },
 async beforeMount(){
-    let {nationalCode} = this.$route.params
-    let teacher = (await api.get("/teachers/edit/",{params:{nationalCode:nationalCode}})).data[0]
-    this.teacher = teacher
+    let nationalCode = this.$route.params.nationalCode
+    this.teacher = await teacherApi.teacherGet(nationalCode)
+
   },
   methods: {
     async editTeacher() {
       if(this.teacher.BirthDate != '' || this.teacher.Firstname != '' || this.teacher.Lastname != '' || this.teacher.NationalCode != ''){
-        let res = (await api.post("/teachers/edit/", this.teacher)).data;
-
+        let res = await teacherApi.teacherPut(this.teacher.NationalCode,this.teacher);
+        console.log(res)
         if(res === true){
           this.UserAdded = true
         }
@@ -102,7 +102,7 @@ async beforeMount(){
 </script>
 
 <style scoped>
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
 
 .login-page {
   width: 360px;
